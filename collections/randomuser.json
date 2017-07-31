@@ -1,0 +1,105 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PracticeCollection",
+		"_postman_id": "28fab9e5-81a2-6750-196e-c7fdcf3161b4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://echo.getpostman.com/get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							"",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;",
+							"",
+							"if(contentTypeHeaderExists) {",
+							"    tests[\"Content-Type is application/json\"] = responseHeaders[\"Content-Type\"].has(\"application/json\");",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://echo.getpostman.com/get",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "https://jsonblob.com/api/jsonBlob",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 404\"] = responseCode.code === 404;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://jsonblob.com/api/jsonBlob/e476a205-7615-11e7-9e0d-27319f9c62a1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"content\": \"My first blog post, updated :)\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://api.randomuser.me/0.6?gender=female",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Should return 200 on success\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Should return content type header\"] = postman.getResponseHeader(\"Content-Type\");",
+							"",
+							"tests[\"Should return server header\"] = postman.getResponseHeader(\"Server\");",
+							"",
+							"tests[\"Should include email, username, password, and phone number\"] = responseBody.has(\"email\" && \"username\" && \"password\" && \"phone\");",
+							"",
+							"var femJSON = JSON.parse(responseBody);",
+							"tests[\"Should return a female user\"] = /female/.test(femJSON.results[0].user.gender);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://api.randomuser.me/0.6?gender=female",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Random User API testing using Postman"
+			},
+			"response": []
+		}
+	]
+}
