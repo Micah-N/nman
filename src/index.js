@@ -4,7 +4,7 @@ var newman = require('newman'); // require newman in your project
 newman.run({
     collection: require('../collections/randomuser.json'),
     reporters: 'cli'
-}, function (error) {
+}, (error) => {
 	if (error) { throw err; }
     console.log('collection run complete!');
 });
