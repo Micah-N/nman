@@ -87,8 +87,6 @@
 							"var femJSON = JSON.parse(responseBody);",
 							"tests[\"Should return a female user\"] = /female/.test(femJSON.results[0].user.gender);",
 							"tests[\"Should not be gzip compressed\"] = responseBody.has(\"gzipped\") === false;",
-							"",
-							"",
 							""
 						]
 					}

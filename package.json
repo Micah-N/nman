@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "pretty": "newman run collections/randomuser.json --color"
+    "pretty": "newman run collections/randomuser.json --color",
+    "nasa": "newman run collections/nasa.json --color"
   },
   "author": "",
   "license": "ISC",

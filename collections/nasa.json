@@ -1,0 +1,174 @@
+{
+	"variables": [],
+	"info": {
+		"name": "NASA-example",
+		"_postman_id": "4e7de32c-24f7-48eb-25ec-aef237f0aefa",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Astronomy Picture of the Day",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Micah's NASA Picture Test",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"if(responseCode.code === 200) {",
+							"    try {",
+							"        var result = JSON.parse(responseBody);",
+							"        var title = result.title;",
+							"        var explanation = result.explanation;",
+							"        var url = result.hdurl;",
+							"    }",
+							"    catch(caught) {",
+							"        console.log(caught);",
+							"    }",
+							"    ",
+							"    postman.setEnvironmentVariable(\"spaceTitle\", title);",
+							"    postman.setEnvironmentVariable(\"spaceExplanation\", explanation);",
+							"    postman.setEnvironmentVariable(\"spaceUrl\", url);",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.nasa.gov/planetary/apod?api_key=skXBxEXT3UA5vZtLNb9mdYhJg89Hdhfbom9PBRD9",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nasa",
+						"gov"
+					],
+					"path": [
+						"planetary",
+						"apod"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "skXBxEXT3UA5vZtLNb9mdYhJg89Hdhfbom9PBRD9",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "GET request for Astronomy Picture of the Day from NASA. Sending this request will return a picture posted by NASA."
+			},
+			"response": []
+		},
+		{
+			"name": "Get imgur auth token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Micah's NASA-Imgur Test",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"if(responseCode.code === 200) {",
+							"    try {",
+							"      var result = JSON.parse(responseBody);",
+							"      var newAccessToken = result.access_token;",
+							"    }",
+							"    catch(caught) {",
+							"        console.log(caught);",
+							"    }",
+							"    postman.setEnvironmentVariable(\"imgurAccessToken\", newAccessToken);",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.imgur.com/oauth2/token",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "refresh_token",
+							"value": "{{imgurRefreshToken}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{imgurClientId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{imgurClientSecret}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Upload image to imgur",
+			"request": {
+				"url": "https://api.imgur.com/3/upload",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{imgurAccessToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"value": "{{spaceUrl}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "{{spaceTitle}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "{{spaceExplanation}}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

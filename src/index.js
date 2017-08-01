@@ -5,6 +5,6 @@ newman.run({
     collection: require('../collections/randomuser.json'),
     reporters: 'cli'
 }, (error) => {
-	if (error) { throw err; }
+	if (error) { throw error; }
     console.log('collection run complete!');
 });
